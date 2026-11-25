@@ -1,89 +1,287 @@
-import React from 'react';
-import { ExternalLink, Github, CheckCircle2 } from 'lucide-react';
+import React, { useState } from 'react';
+import {
+  ExternalLink,
+  Github,
+  ArrowUpRight,
+  CheckCircle2,
+  X,
+} from 'lucide-react';
 import { PROJECTS } from '../constants';
+import { Project, ProjectCategory } from '../types';
+import ProjectVisual from './ProjectVisual';
+
+type FilterOption = 'All' | ProjectCategory;
+
+const FILTERS: FilterOption[] = [
+  'All',
+  'Full-Stack',
+  'Frontend',
+  'Mobile',
+  'Blockchain',
+  'AI & Tools',
+];
+
+const categoryBadgeClass = (category: ProjectCategory) => {
+  switch (category) {
+    case 'Full-Stack':
+      return 'bg-emerald-500/10 text-emerald-300 border-emerald-500/20';
+    case 'Frontend':
+      return 'bg-cyan-500/10 text-cyan-300 border-cyan-500/20';
+    case 'Mobile':
+      return 'bg-sky-500/10 text-sky-300 border-sky-500/20';
+    case 'Blockchain':
+      return 'bg-violet-500/10 text-violet-300 border-violet-500/20';
+    case 'AI & Tools':
+      return 'bg-amber-500/10 text-amber-300 border-amber-500/20';
+  }
+};
 
 const Projects: React.FC = () => {
-  return (
-    <section id="projects" className="scroll-mt-24 py-24 relative">
-       {/* Background accent */}
-       <div className="absolute right-0 top-1/4 w-1/3 h-1/3 bg-web3-600/5 rounded-full blur-[100px] -z-10" />
+  const [activeFilter, setActiveFilter] = useState<FilterOption>('All');
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mb-16">
-          <h2 className="text-3xl md:text-4xl font-display font-bold text-white mb-4">Featured Projects</h2>
-          <p className="text-slate-400 max-w-2xl">
-            Real-world applications demonstrating full-stack architecture and blockchain integration.
-          </p>
+  const filtered = PROJECTS.filter((p) => {
+    if (activeFilter === 'All') return true;
+    return (
+      p.category === activeFilter ||
+      p.secondaryCategories?.includes(activeFilter)
+    );
+  });
+
+  return (
+    <section id="projects" className="py-20 sm:py-28 border-t border-white/[0.06]">
+      <div className="max-w-6xl mx-auto px-5 sm:px-8">
+        {/* Header & Filter Bar */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+          <div className="space-y-3">
+            <p className="font-mono text-xs uppercase tracking-widest text-emerald-400">
+              Selected Work
+            </p>
+            <h2 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-zinc-50">
+              Engineered for production, not just demos.
+            </h2>
+            <p className="text-zinc-400 max-w-xl text-sm sm:text-base">
+              Curated projects from my GitHub spanning full-stack web apps, React Native mobile
+              development, Solidity smart contracts, and local AI tooling.
+            </p>
+          </div>
+
+          <div
+            className="flex flex-wrap gap-1.5 p-1 rounded-xl bg-zinc-900/90 border border-white/[0.07] self-start"
+            role="tablist"
+            aria-label="Filter projects by discipline"
+          >
+            {FILTERS.map((filter) => {
+              const active = activeFilter === filter;
+              return (
+                <button
+                  key={filter}
+                  type="button"
+                  role="tab"
+                  aria-selected={active}
+                  onClick={() => setActiveFilter(filter)}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors cursor-pointer ${
+                    active
+                      ? 'bg-zinc-100 text-zinc-950'
+                      : 'text-zinc-400 hover:text-zinc-100 hover:bg-white/[0.04]'
+                  }`}
+                >
+                  {filter}
+                </button>
+              );
+            })}
+          </div>
         </div>
 
-        <div className="space-y-20">
-          {PROJECTS.map((project, idx) => (
-            <div key={project.id} className={`flex flex-col ${idx % 2 === 1 ? 'lg:flex-row-reverse' : 'lg:flex-row'} gap-12 items-center`}>
-              
-              {/* Project Image */}
-              <div className="w-full lg:w-1/2 group">
-                <div className="relative overflow-hidden rounded-xl border border-slate-700/50 shadow-2xl bg-slate-800">
-                  <div className="absolute inset-0 bg-slate-900/20 group-hover:bg-transparent transition-colors z-10" />
-                  <img 
-                    src={project.imageUrl} 
-                    alt={project.title} 
-                    className="w-full h-auto transform group-hover:scale-105 transition-transform duration-700"
-                    loading="lazy"
-                  />
-                </div>
-              </div>
+        {/* Projects Grid */}
+        <div className="grid md:grid-cols-2 gap-6">
+          {filtered.map((project) => (
+            <article
+              key={project.id}
+              className={`surface-card surface-card-hover rounded-2xl overflow-hidden flex flex-col ${
+                project.featured && activeFilter === 'All' ? 'md:col-span-1' : ''
+              }`}
+            >
+              <ProjectVisual type={project.visualType} />
 
-              {/* Project Info */}
-              <div className="w-full lg:w-1/2 space-y-6">
-                <h3 className="text-3xl font-bold text-white font-display">{project.title}</h3>
-                <p className="text-slate-400 text-lg leading-relaxed">
+              <div className="p-6 flex-1 flex flex-col">
+                <div className="flex items-center justify-between gap-2 mb-3">
+                  <div className="flex flex-wrap items-center gap-1.5">
+                    <span
+                      className={`text-[11px] font-mono px-2 py-0.5 rounded-md border ${categoryBadgeClass(
+                        project.category
+                      )}`}
+                    >
+                      {project.category}
+                    </span>
+                    {project.secondaryCategories?.map((cat) => (
+                      <span
+                        key={cat}
+                        className={`text-[11px] font-mono px-2 py-0.5 rounded-md border ${categoryBadgeClass(
+                          cat
+                        )}`}
+                      >
+                        {cat}
+                      </span>
+                    ))}
+                  </div>
+                  <span className="font-mono text-xs text-zinc-500">{project.year}</span>
+                </div>
+
+                <h3 className="font-display text-xl font-bold text-zinc-50 tracking-tight">
+                  {project.title}
+                </h3>
+                <p className="text-xs font-mono text-zinc-400 mt-1 mb-3">
+                  {project.subtitle}
+                </p>
+
+                <p className="text-sm text-zinc-400 leading-relaxed mb-5">
                   {project.description}
                 </p>
 
-                <div className="flex flex-wrap gap-2">
-                  {project.tags.map(tag => (
-                    <span key={tag} className="text-xs font-semibold px-2.5 py-1 rounded bg-web3-900/30 text-web3-300 border border-web3-900/50">
+                {/* Tech Tags */}
+                <div className="flex flex-wrap gap-1.5 mb-6 mt-auto">
+                  {project.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="text-[11px] font-mono px-2 py-1 rounded-md bg-white/[0.03] border border-white/[0.06] text-zinc-300"
+                    >
                       {tag}
                     </span>
                   ))}
                 </div>
 
-                <ul className="space-y-3 pt-2">
-                  {project.highlights.map((highlight, hIdx) => (
-                    <li key={hIdx} className="flex items-start gap-3 text-slate-300">
-                      <CheckCircle2 className="w-5 h-5 text-celo-500 flex-shrink-0 mt-0.5" />
-                      <span>{highlight}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <div className="flex gap-4 pt-4">
-                  <a 
-                    href={project.repoUrl} 
-                    target="_blank" 
-                    rel="noreferrer"
-                    className="flex items-center gap-2 px-5 py-2.5 bg-slate-800 hover:bg-slate-700 text-white rounded-lg font-medium transition-colors border border-slate-700"
+                {/* Actions */}
+                <div className="pt-4 border-t border-white/[0.07] flex items-center justify-between gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setSelectedProject(project)}
+                    className="inline-flex items-center gap-1.5 text-xs font-medium text-emerald-400 hover:text-emerald-300 transition-colors cursor-pointer"
                   >
-                    <Github className="w-4 h-4" />
-                    Source Code
-                  </a>
-                  {project.liveUrl && (
-                    <a 
-                      href={project.liveUrl} 
-                      target="_blank" 
-                      rel="noreferrer"
-                      className="flex items-center gap-2 px-5 py-2.5 bg-web3-600 hover:bg-web3-500 text-white rounded-lg font-medium transition-colors shadow-lg shadow-web3-900/20"
+                    <span>Architecture &amp; Highlights</span>
+                    <ArrowUpRight className="w-3.5 h-3.5" />
+                  </button>
+
+                  <div className="flex items-center gap-2">
+                    <a
+                      href={project.repoUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-zinc-300 bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.07] transition-colors"
                     >
-                      <ExternalLink className="w-4 h-4" />
-                      Live Demo
+                      <Github className="w-3.5 h-3.5" />
+                      <span>Code</span>
                     </a>
-                  )}
+                    {project.liveUrl && (
+                      <a
+                        href={project.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-zinc-100 text-zinc-950 hover:bg-white transition-colors"
+                      >
+                        <span>Live</span>
+                        <ExternalLink className="w-3.5 h-3.5" />
+                      </a>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
+            </article>
           ))}
         </div>
       </div>
+
+      {/* Case Study Modal */}
+      {selectedProject && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm"
+          onClick={() => setSelectedProject(null)}
+        >
+          <div
+            className="w-full max-w-xl rounded-2xl bg-[#111114] border border-white/12 shadow-2xl overflow-hidden"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="p-6 border-b border-white/[0.08] flex items-start justify-between gap-4">
+              <div>
+                <p className="font-mono text-xs text-emerald-400">
+                  {selectedProject.category} · {selectedProject.year}
+                </p>
+                <h3 className="font-display text-2xl font-bold text-zinc-50 mt-1">
+                  {selectedProject.title}
+                </h3>
+                <p className="text-xs font-mono text-zinc-400 mt-1">
+                  {selectedProject.subtitle}
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setSelectedProject(null)}
+                className="p-2 rounded-lg text-zinc-400 hover:text-zinc-100 hover:bg-white/[0.06] cursor-pointer"
+                aria-label="Close modal"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="p-6 space-y-5">
+              <p className="text-sm text-zinc-300 leading-relaxed">
+                {selectedProject.description}
+              </p>
+
+              <div className="space-y-2.5">
+                <h4 className="font-mono text-xs uppercase tracking-wider text-zinc-500">
+                  Key Engineering Highlights
+                </h4>
+                <ul className="space-y-2.5">
+                  {selectedProject.highlights.map((item) => (
+                    <li
+                      key={item}
+                      className="flex items-start gap-2.5 text-sm text-zinc-300 leading-relaxed"
+                    >
+                      <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="flex flex-wrap gap-1.5 pt-2">
+                {selectedProject.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="text-[11px] font-mono px-2.5 py-1 rounded-md bg-white/[0.04] border border-white/[0.08] text-zinc-300"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div className="px-6 py-4 bg-zinc-950/60 border-t border-white/[0.08] flex items-center justify-end gap-2.5">
+              <a
+                href={selectedProject.repoUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-medium text-zinc-200 bg-white/[0.05] hover:bg-white/[0.1] border border-white/10 transition-colors"
+              >
+                <Github className="w-3.5 h-3.5" />
+                <span>View Repository</span>
+              </a>
+              {selectedProject.liveUrl && (
+                <a
+                  href={selectedProject.liveUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-medium bg-zinc-100 text-zinc-950 hover:bg-white transition-colors"
+                >
+                  <span>Open Live Demo</span>
+                  <ExternalLink className="w-3.5 h-3.5" />
+                </a>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 };

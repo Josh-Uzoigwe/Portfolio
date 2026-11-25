@@ -1,160 +1,174 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { MessageCircle, X, Send, Bot, Loader2 } from 'lucide-react';
-import { sendMessageToGemini } from '../services/geminiService';
+import { MessageSquare, X, Send, Sparkles } from 'lucide-react';
 import { ChatMessage } from '../types';
+import { sendMessageToAssistant } from '../services/geminiService';
+
+const QUICK_PROMPTS = [
+  'What are his best projects?',
+  'Tell me about his mobile work',
+  'Summarize his Web3 experience',
+];
 
 const ChatWidget: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [input, setInput] = useState('');
+  const [loading, setLoading] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: 'welcome',
       role: 'assistant',
-      content: "Hi! I'm Joshua's AI Assistant. Ask me anything about his projects, Web3 skills, or experience.",
-      timestamp: Date.now()
-    }
+      content:
+        'Hi! Ask me anything about Joshua’s full-stack projects, React Native work, Web3 experience, or availability.',
+      timestamp: Date.now(),
+    },
   ]);
-  const [input, setInput] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
+  const endRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    scrollToBottom();
-  }, [messages, isOpen]);
+    if (open) {
+      endRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages, open]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!input.trim() || isLoading) return;
+  const handleSend = async (text?: string) => {
+    const query = (text ?? input).trim();
+    if (!query || loading) return;
 
-    const userMessage: ChatMessage = {
-      id: Date.now().toString(),
+    const userMsg: ChatMessage = {
+      id: `${Date.now()}-u`,
       role: 'user',
-      content: input,
-      timestamp: Date.now()
+      content: query,
+      timestamp: Date.now(),
     };
 
-    setMessages(prev => [...prev, userMessage]);
-    setInput('');
-    setIsLoading(true);
+    setMessages((prev) => [...prev, userMsg]);
+    if (!text) setInput('');
+    setLoading(true);
 
     try {
-      // Prepare history for context
-      const history = messages.map(m => ({ role: m.role, content: m.content }));
-      
-      const responseText = await sendMessageToGemini(history, userMessage.content);
-      
-      const botMessage: ChatMessage = {
-        id: (Date.now() + 1).toString(),
-        role: 'assistant',
-        content: responseText,
-        timestamp: Date.now()
-      };
-      setMessages(prev => [...prev, botMessage]);
-    } catch (error) {
-      const errorMessage: ChatMessage = {
-        id: (Date.now() + 1).toString(),
-        role: 'assistant',
-        content: "I'm having trouble connecting to the server right now. Please try again later.",
-        timestamp: Date.now()
-      };
-      setMessages(prev => [...prev, errorMessage]);
+      const history = messages.map((m) => ({ role: m.role, content: m.content }));
+      const reply = await sendMessageToAssistant(history, query);
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: `${Date.now()}-a`,
+          role: 'assistant',
+          content: reply,
+          timestamp: Date.now(),
+        },
+      ]);
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
-  if (!process.env.API_KEY) {
-    // If no API key, don't render or render a disabled state. 
-    // For this portfolio, we'll hide it if not configured to avoid broken UI.
-    return null; 
-  }
-
   return (
-    <>
-      <button
-        onClick={() => setIsOpen(true)}
-        className={`fixed bottom-6 right-6 p-4 bg-web3-600 hover:bg-web3-500 text-white rounded-full shadow-2xl transition-all duration-300 z-40 ${isOpen ? 'scale-0 opacity-0' : 'scale-100 opacity-100'}`}
-        aria-label="Open AI Chat"
-      >
-        <MessageCircle className="w-6 h-6" />
-      </button>
-
-      <div className={`fixed bottom-6 right-6 w-[90vw] md:w-[400px] h-[500px] bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl flex flex-col z-50 transition-all duration-300 transform origin-bottom-right ${isOpen ? 'scale-100 opacity-100' : 'scale-0 opacity-0 pointer-events-none'}`}>
-        
-        {/* Header */}
-        <div className="p-4 border-b border-slate-800 flex items-center justify-between bg-slate-950/50 rounded-t-2xl">
-          <div className="flex items-center gap-2">
-            <div className="p-1.5 bg-web3-500/20 rounded-lg">
-              <Bot className="w-5 h-5 text-web3-400" />
+    <div className="fixed bottom-5 right-5 z-40">
+      {open ? (
+        <div className="w-[340px] sm:w-[370px] rounded-2xl bg-[#111114] border border-white/12 shadow-2xl overflow-hidden flex flex-col max-h-[500px]">
+          {/* Header */}
+          <div className="px-4 py-3.5 bg-zinc-950/80 border-b border-white/[0.08] flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className="w-7 h-7 rounded-lg bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
+                <Sparkles className="w-3.5 h-3.5" />
+              </div>
+              <div>
+                <p className="text-xs font-semibold text-zinc-100">Ask about Joshua</p>
+                <p className="text-[10px] font-mono text-zinc-500">Portfolio Assistant</p>
+              </div>
             </div>
-            <div>
-              <h3 className="text-white font-medium text-sm">Joshua's Assistant</h3>
-              <p className="text-xs text-slate-500 flex items-center gap-1">
-                <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"/> 
-                Powered by Gemini
-              </p>
-            </div>
-          </div>
-          <button 
-            onClick={() => setIsOpen(false)}
-            className="text-slate-400 hover:text-white transition-colors"
-          >
-            <X className="w-5 h-5" />
-          </button>
-        </div>
-
-        {/* Messages */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar">
-          {messages.map((msg) => (
-            <div
-              key={msg.id}
-              className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+            <button
+              type="button"
+              onClick={() => setOpen(false)}
+              className="p-1.5 rounded-lg text-zinc-400 hover:text-zinc-100 hover:bg-white/[0.06] cursor-pointer"
+              aria-label="Close assistant"
             >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+
+          {/* Messages */}
+          <div className="flex-1 overflow-y-auto p-4 space-y-3 text-xs leading-relaxed">
+            {messages.map((msg) => (
               <div
-                className={`max-w-[80%] rounded-2xl px-4 py-3 text-sm ${
-                  msg.role === 'user'
-                    ? 'bg-web3-600 text-white rounded-tr-none'
-                    : 'bg-slate-800 text-slate-200 rounded-tl-none border border-slate-700'
-                }`}
+                key={msg.id}
+                className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
               >
-                {msg.content}
+                <div
+                  className={`max-w-[85%] px-3.5 py-2.5 rounded-2xl ${
+                    msg.role === 'user'
+                      ? 'bg-zinc-100 text-zinc-950 rounded-br-sm font-medium'
+                      : 'bg-zinc-900 text-zinc-300 border border-white/[0.07] rounded-bl-sm'
+                  }`}
+                >
+                  {msg.content}
+                </div>
               </div>
-            </div>
-          ))}
-          {isLoading && (
-            <div className="flex justify-start">
-              <div className="bg-slate-800 rounded-2xl rounded-tl-none px-4 py-3 border border-slate-700">
-                <Loader2 className="w-4 h-4 text-slate-400 animate-spin" />
+            ))}
+            {loading && (
+              <div className="flex justify-start">
+                <div className="px-3.5 py-2.5 rounded-2xl bg-zinc-900 border border-white/[0.07] text-zinc-500 font-mono text-[11px]">
+                  Thinking...
+                </div>
               </div>
+            )}
+            <div ref={endRef} />
+          </div>
+
+          {/* Quick prompts on initial view */}
+          {messages.length <= 2 && (
+            <div className="px-4 pb-2 flex flex-wrap gap-1.5">
+              {QUICK_PROMPTS.map((prompt) => (
+                <button
+                  key={prompt}
+                  type="button"
+                  onClick={() => handleSend(prompt)}
+                  className="text-[11px] px-2.5 py-1 rounded-full bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.08] text-zinc-300 transition-colors cursor-pointer"
+                >
+                  {prompt}
+                </button>
+              ))}
             </div>
           )}
-          <div ref={messagesEndRef} />
-        </div>
 
-        {/* Input */}
-        <form onSubmit={handleSubmit} className="p-4 border-t border-slate-800 bg-slate-950/50 rounded-b-2xl">
-          <div className="flex gap-2">
+          {/* Input */}
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleSend();
+            }}
+            className="p-3 border-t border-white/[0.08] bg-zinc-950/60 flex items-center gap-2"
+          >
             <input
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="Ask about my projects..."
-              className="flex-1 bg-slate-900 border border-slate-700 text-white text-sm rounded-lg px-4 py-2 focus:outline-none focus:border-web3-500 focus:ring-1 focus:ring-web3-500 transition-all"
+              placeholder="Ask about projects, stack, CV..."
+              className="flex-1 bg-zinc-900 border border-white/10 rounded-xl px-3 py-2 text-xs text-zinc-100 placeholder:text-zinc-500 focus:outline-none focus:border-emerald-500/50"
             />
             <button
               type="submit"
-              disabled={isLoading || !input.trim()}
-              className="p-2 bg-web3-600 text-white rounded-lg hover:bg-web3-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              disabled={!input.trim() || loading}
+              className="p-2 rounded-xl bg-emerald-500 text-zinc-950 hover:bg-emerald-400 disabled:opacity-40 transition-colors cursor-pointer"
+              aria-label="Send message"
             >
-              <Send className="w-4 h-4" />
+              <Send className="w-3.5 h-3.5" />
             </button>
-          </div>
-        </form>
-      </div>
-    </>
+          </form>
+        </div>
+      ) : (
+        <button
+          type="button"
+          onClick={() => setOpen(true)}
+          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-zinc-900/95 hover:bg-zinc-800 text-zinc-100 border border-white/15 shadow-xl backdrop-blur-md text-xs font-medium transition-all cursor-pointer"
+          aria-label="Open portfolio assistant"
+        >
+          <MessageSquare className="w-4 h-4 text-emerald-400" />
+          <span>Ask AI</span>
+        </button>
+      )}
+    </div>
   );
 };
 

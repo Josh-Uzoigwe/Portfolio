@@ -1,20 +1,28 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# Uzoigwe Joshua — Software Engineer Portfolio
 
-# Run and deploy your AI Studio app
+Personal developer portfolio and job-ready CV for **Uzoigwe Joshua** (Full-Stack Software Engineer · Mobile · Web3).
 
-This contains everything you need to run your app locally.
+## Tech Stack
+- **React 19** + **TypeScript**
+- **Vite 6** + **Tailwind CSS v4**
+- **Lucide React** icons
+- **Optional Gemini AI Assistant** (with automatic local fallback when no `GEMINI_API_KEY` is configured)
 
-View your app in AI Studio: https://ai.studio/apps/drive/1YaDznywrxom1VZHXMpATrmIKhaUeDdu9
+## Local Development
 
-## Run Locally
+```bash
+npm install
+npm run dev
+```
 
-**Prerequisites:**  Node.js
+## Production Build
 
+```bash
+npm run typecheck
+npm run build
+```
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+## CV Files
+- Interactive & print-ready Web CV: `public/cv.html` (served at `/cv.html`)
+- Job-ready 1-page PDF CV: `public/Uzoigwe-Joshua-CV.pdf` and `cv/Uzoigwe-Joshua-CV.pdf`
+- Editable Markdown CV: `cv/Uzoigwe_Joshua_CV.md`

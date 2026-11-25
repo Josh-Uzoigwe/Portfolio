@@ -3,33 +3,44 @@ import { SKILLS } from '../constants';
 
 const Skills: React.FC = () => {
   return (
-    <section id="skills" className="scroll-mt-24 py-20 bg-slate-900/50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-display font-bold text-white mb-4">Technical Expertise</h2>
-          <p className="text-slate-400 max-w-2xl mx-auto">
-            A comprehensive toolkit for building scalable full-stack and web3 applications.
+    <section id="skills" className="py-20 sm:py-28 border-t border-white/[0.06]">
+      <div className="max-w-6xl mx-auto px-5 sm:px-8">
+        <div className="space-y-3 mb-12">
+          <p className="font-mono text-xs uppercase tracking-widest text-emerald-400">
+            Technical Stack
+          </p>
+          <h2 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-zinc-50">
+            Tools I use to ship reliably.
+          </h2>
+          <p className="text-zinc-400 max-w-xl text-sm sm:text-base">
+            From type-safe Next.js frontends and Prisma-backed APIs to React Native mobile apps
+            and audited Solidity contracts.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {SKILLS.map((category, idx) => (
-            <div 
-              key={idx}
-              className="glass-card p-6 rounded-xl hover:bg-slate-800/80 transition-all duration-300 group"
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {SKILLS.map((category) => (
+            <div
+              key={category.title}
+              className="surface-card surface-card-hover rounded-2xl p-6 flex flex-col gap-4"
             >
-              <div className="flex items-center gap-4 mb-6">
-                <div className="p-3 bg-web3-900/30 rounded-lg text-web3-400 group-hover:text-web3-300 transition-colors">
-                  {category.icon}
+              <div className="flex items-start justify-between gap-3 pb-3 border-b border-white/[0.06]">
+                <div>
+                  <h3 className="font-display font-semibold text-base text-zinc-100">
+                    {category.title}
+                  </h3>
+                  <p className="text-xs text-zinc-500 mt-0.5">{category.subtitle}</p>
                 </div>
-                <h3 className="text-xl font-bold text-white">{category.title}</h3>
+                <span className="font-mono text-xs text-zinc-600 select-none">
+                  {category.index}
+                </span>
               </div>
-              
+
               <div className="flex flex-wrap gap-2">
-                {category.skills.map((skill, sIdx) => (
-                  <span 
-                    key={sIdx}
-                    className="px-3 py-1 bg-slate-800 border border-slate-700 text-slate-300 text-sm rounded-full"
+                {category.skills.map((skill) => (
+                  <span
+                    key={skill}
+                    className="text-xs font-mono px-2.5 py-1 rounded-lg bg-white/[0.03] border border-white/[0.07] text-zinc-300"
                   >
                     {skill}
                   </span>
