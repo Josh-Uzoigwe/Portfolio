@@ -1,6 +1,6 @@
 # Uzoigwe Joshua
 **Software Engineer (Full-Stack · Mobile · Web3)**  
-Nsukka, Nigeria (Remote-Ready) | uzoigwejoshua2@gmail.com | +234 704 224 4727  
+Lagos, Nigeria | uzoigwejoshua2@gmail.com | +234 704 224 4727  
 GitHub: [github.com/Josh-Uzoigwe](https://github.com/Josh-Uzoigwe) | LinkedIn: [linkedin.com/in/joshua-uzoigwe-4b5411239](https://www.linkedin.com/in/joshua-uzoigwe-4b5411239) | Portfolio: [portfolio-lilac-nine-60.vercel.app](https://portfolio-lilac-nine-60.vercel.app)
 
 ---
@@ -46,7 +46,7 @@ Full-Stack Software Engineer experienced in building and maintaining web applica
 
 ## Community
 
-### Community Manager & Blockchain Developer — Borderless Tech Club, UNN · Nsukka
+### Community Manager & Blockchain Developer — Borderless Tech Club, UNN
 *Mar 2026 – Present*
 - Teach introductory Solidity and DApp development sessions for students at UNN and help organize campus build sprints, workshops, and hackathons.
 

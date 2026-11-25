@@ -17,7 +17,7 @@ export const PERSONAL_INFO = {
     'More recently, I started building mobile apps with React Native and Expo. Since I already write React and TypeScript daily, moving into mobile felt natural — I used Expo to build the companion mobile app for my final-year SIWES logbook project.',
     "Outside of regular web and mobile work, I spend time building on EVM chains and helping run Borderless Tech Club at UNN, where we teach other students Solidity and Web3 basics. Along the way, I placed 2nd in Base Builder Quest #10 and made the top 50 in the Celo Hackathon.",
   ],
-  location: 'Nsukka, Nigeria · Open to Remote',
+  location: 'Lagos, Nigeria · Open to Remote',
   email: 'uzoigwejoshua2@gmail.com',
   phone: '+234 704 224 4727',
   github: 'https://github.com/Josh-Uzoigwe',
@@ -211,7 +211,7 @@ export const EXPERIENCE: ExperienceItem[] = [
   {
     role: 'Community Manager & Blockchain Developer',
     organization: 'Borderless Tech Club — UNN',
-    location: 'Nsukka, Nigeria',
+    location: 'Hybrid',
     period: 'Mar 2026 – Present',
     type: 'Leadership',
     summary:
