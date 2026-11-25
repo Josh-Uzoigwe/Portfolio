@@ -25,28 +25,20 @@ const Contact: React.FC = () => {
   };
 
   return (
-    <section id="contact" className="py-20 sm:py-28 border-t border-white/[0.06]">
+    <section id="contact" className="scroll-mt-20 py-20 sm:py-28 border-t border-white/[0.06]">
       <div className="max-w-6xl mx-auto px-5 sm:px-8">
         <div className="surface-card rounded-3xl p-8 sm:p-12 relative overflow-hidden">
-          <div
-            className="absolute -bottom-24 -right-24 w-80 h-80 rounded-full blur-[110px] opacity-20 pointer-events-none"
-            style={{
-              background: 'radial-gradient(circle, rgba(16,185,129,0.7) 0%, transparent 70%)',
-            }}
-          />
-
           <div className="relative grid lg:grid-cols-12 gap-8 items-center">
             <div className="lg:col-span-7 space-y-4">
-              <p className="font-mono text-xs uppercase tracking-widest text-emerald-400">
-                Get In Touch
+              <p className="font-mono text-xs uppercase tracking-widest text-zinc-500">
+                Contact
               </p>
               <h2 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-zinc-50">
-                Let’s build something worth shipping.
+                Get in touch
               </h2>
               <p className="text-zinc-400 text-sm sm:text-base max-w-xl leading-relaxed">
-                I’m open to full-time Software Engineer roles (Full-Stack, Frontend, or Mobile),
-                as well as select freelance and Web3 engineering engagements. Reach out directly
-                and I’ll reply promptly.
+                I’m open to full-time software engineering roles (full-stack, frontend, backend, or
+                mobile) as well as freelance projects. Email is the fastest way to reach me.
               </p>
 
               <div className="flex flex-wrap items-center gap-3 pt-2">

@@ -1,18 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, FileText, ArrowUpRight } from 'lucide-react';
+import { Menu, X, FileText, ArrowUpRight, Search } from 'lucide-react';
 import { PERSONAL_INFO } from '../constants';
 
 const NAV_LINKS = [
-  { label: 'Work', href: '#projects' },
-  { label: 'Experience', href: '#experience' },
-  { label: 'Stack', href: '#skills' },
-  { label: 'About', href: '#about' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'Work', href: '#projects', id: 'projects' },
+  { label: 'Experience', href: '#experience', id: 'experience' },
+  { label: 'Stack', href: '#skills', id: 'skills' },
+  { label: 'About', href: '#about', id: 'about' },
+  { label: 'Contact', href: '#contact', id: 'contact' },
 ];
 
-const NavBar: React.FC = () => {
+interface NavBarProps {
+  onOpenCommand: () => void;
+}
+
+const NavBar: React.FC<NavBarProps> = ({ onOpenCommand }) => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState<string>('');
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 16);
@@ -20,11 +25,42 @@ const NavBar: React.FC = () => {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  useEffect(() => {
+    const sections = NAV_LINKS.map((l) => document.getElementById(l.id)).filter(
+      Boolean
+    ) as HTMLElement[];
+    if (sections.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+        if (visible[0]?.target?.id) {
+          setActiveSection(visible[0].target.id);
+        }
+      },
+      { rootMargin: '-25% 0px -55% 0px', threshold: [0.1, 0.4] }
+    );
+
+    sections.forEach((sec) => observer.observe(sec));
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setMobileOpen(false);
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [mobileOpen]);
+
   return (
     <header
-      className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
+      className={`fixed top-0 inset-x-0 z-40 transition-all duration-200 ${
         scrolled
-          ? 'bg-[#09090B]/85 backdrop-blur-md border-b border-white/[0.08]'
+          ? 'bg-[#09090B]/90 backdrop-blur-md border-b border-white/[0.08]'
           : 'bg-transparent'
       }`}
     >
@@ -32,10 +68,10 @@ const NavBar: React.FC = () => {
         {/* Monogram / Brand */}
         <a
           href="#"
-          className="flex items-center gap-2.5 group focus:outline-none"
+          className="flex items-center gap-2.5 group focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 rounded-lg"
           aria-label="Uzoigwe Joshua Home"
         >
-          <span className="w-8 h-8 rounded-lg bg-zinc-900 border border-white/10 flex items-center justify-center font-mono text-xs font-semibold text-emerald-400 group-hover:border-emerald-500/40 transition-colors">
+          <span className="w-8 h-8 rounded-lg bg-zinc-900 border border-white/10 flex items-center justify-center font-mono text-xs font-semibold text-zinc-100 group-hover:border-white/25 transition-colors">
             JU
           </span>
           <span className="font-display font-semibold text-sm tracking-tight text-zinc-100">
@@ -45,19 +81,36 @@ const NavBar: React.FC = () => {
 
         {/* Desktop Nav */}
         <nav className="hidden md:flex items-center gap-1" aria-label="Primary">
-          {NAV_LINKS.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className="px-3.5 py-2 text-sm text-zinc-400 hover:text-zinc-100 rounded-md hover:bg-white/[0.04] transition-colors"
-            >
-              {link.label}
-            </a>
-          ))}
+          {NAV_LINKS.map((link) => {
+            const isActive = activeSection === link.id;
+            return (
+              <a
+                key={link.href}
+                href={link.href}
+                className={`px-3.5 py-1.5 text-sm rounded-md transition-colors ${
+                  isActive
+                    ? 'text-zinc-100 bg-white/[0.06] font-medium'
+                    : 'text-zinc-400 hover:text-zinc-100 hover:bg-white/[0.04]'
+                }`}
+              >
+                {link.label}
+              </a>
+            );
+          })}
         </nav>
 
         {/* Desktop Actions */}
-        <div className="hidden md:flex items-center gap-2.5">
+        <div className="hidden md:flex items-center gap-2">
+          <button
+            type="button"
+            onClick={onOpenCommand}
+            className="inline-flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs text-zinc-400 hover:text-zinc-100 bg-zinc-900/80 border border-white/10 hover:border-white/20 transition-colors cursor-pointer"
+            aria-label="Open quick navigation palette"
+          >
+            <Search className="w-3.5 h-3.5" />
+            <span className="font-mono text-[11px] text-zinc-500">⌘K</span>
+          </button>
+
           <a
             href={PERSONAL_INFO.cvPdfUrl}
             target="_blank"
@@ -70,15 +123,26 @@ const NavBar: React.FC = () => {
           </a>
         </div>
 
-        {/* Mobile Menu Button */}
-        <button
-          type="button"
-          onClick={() => setMobileOpen((prev) => !prev)}
-          className="md:hidden p-2 rounded-lg text-zinc-400 hover:text-zinc-100 hover:bg-white/[0.06] transition-colors"
-          aria-label={mobileOpen ? 'Close navigation menu' : 'Open navigation menu'}
-        >
-          {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-        </button>
+        {/* Mobile Actions */}
+        <div className="flex md:hidden items-center gap-1.5">
+          <button
+            type="button"
+            onClick={onOpenCommand}
+            className="p-2 rounded-lg text-zinc-400 hover:text-zinc-100 hover:bg-white/[0.06] transition-colors"
+            aria-label="Open quick navigation"
+          >
+            <Search className="w-4 h-4" />
+          </button>
+          <button
+            type="button"
+            onClick={() => setMobileOpen((prev) => !prev)}
+            className="p-2 rounded-lg text-zinc-400 hover:text-zinc-100 hover:bg-white/[0.06] transition-colors"
+            aria-expanded={mobileOpen}
+            aria-label={mobileOpen ? 'Close navigation menu' : 'Open navigation menu'}
+          >
+            {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Drawer */}

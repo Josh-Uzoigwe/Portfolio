@@ -22,6 +22,7 @@ export interface ExperienceItem {
   location: string;
   period: string;
   type: 'Work' | 'Leadership';
+  liveUrl?: string;
   summary: string;
   bullets: string[];
   stack: string[];
@@ -39,11 +40,4 @@ export interface SkillCategory {
   title: string;
   subtitle: string;
   skills: string[];
-}
-
-export interface ChatMessage {
-  id: string;
-  role: 'user' | 'assistant';
-  content: string;
-  timestamp: number;
 }

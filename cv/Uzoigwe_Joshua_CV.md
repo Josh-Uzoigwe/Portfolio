@@ -5,50 +5,50 @@ GitHub: [github.com/Josh-Uzoigwe](https://github.com/Josh-Uzoigwe) | LinkedIn: [
 
 ---
 
-## Professional Summary
-Full-Stack Software Engineer with hands-on experience designing, building, and deploying production web applications using TypeScript, Next.js, React, Node.js, and relational/NoSQL databases. Actively expanding into cross-platform mobile development with React Native & Expo, alongside building Solidity smart contracts and decentralized applications on EVM networks (Base & Celo). Proven track record of end-to-end product delivery, automated testing, and technical community leadership.
+## Summary
+Full-Stack Software Engineer experienced in building and maintaining web applications with TypeScript, Next.js, React, Node.js, and SQL/NoSQL databases. Also building cross-platform mobile apps with React Native and Expo, and writing Solidity smart contracts on Base and Celo. Computer Science graduate from the University of Nigeria, Nsukka.
 
-## Technical Skills
-- **Languages & Frontend:** TypeScript, JavaScript (ES6+), React, Next.js, Tailwind CSS, HTML5/CSS3, WCAG Accessibility, Python
-- **Backend & Databases:** Node.js, Express.js, Prisma ORM, MongoDB (Mongoose), MySQL, REST APIs, JWT & Google OAuth 2.0, Zod, TOTP 2FA
-- **Mobile & Web3:** React Native, Expo, React Navigation, Expo SecureStore · Solidity, Ethers.js, Smart Contract Escrow, Base (L2), Celo
-- **Testing & DevOps:** Git/GitHub, Docker & Docker Compose, Vitest, Jest, Supertest, Playwright E2E, CI/CD, Vercel, Render
+## Skills
+- **Languages & Frontend:** TypeScript, JavaScript (ES6+), React, Next.js, Tailwind CSS, HTML5/CSS3, Python
+- **Backend & Databases:** Node.js, Express.js, Prisma, MongoDB (Mongoose), MySQL, REST APIs, JWT & Google OAuth, Zod, TOTP 2FA
+- **Mobile & Blockchain:** React Native, Expo, React Navigation, Expo SecureStore · Solidity, Ethers.js, Base (L2), Celo
+- **Testing & Tools:** Git/GitHub, Docker & Docker Compose, Vitest, Jest, Supertest, Playwright, Vercel, Render
 
 ## Work Experience
 
-### Full-Stack Engineer — Elohimtech · Remote
+### Full-Stack Engineer — Elohimtech · Remote ([Live](https://elohim-tech1.vercel.app))
 *Oct 2024 – Present*
-- Architected and shipped a full-stack gadget e-commerce platform from the ground up, pairing a Next.js + TypeScript storefront with a modular Express & MongoDB REST API.
-- Engineered secure authentication, product catalogue management, real-time stock availability tracking, unique product tagging, and streamlined WhatsApp/payment checkout pipelines.
-- Built internal admin dashboards for inventory management, sales analytics, and order tracking, improving operational visibility for day-to-day store fulfillment.
+- Built and maintain the company’s online gadget storefront in Next.js and TypeScript, backed by a separate Express and MongoDB REST API.
+- Implemented user auth, product catalogue management, live stock status tags, and checkout flows including direct WhatsApp ordering.
+- Built internal admin pages so staff can update products, track stock counts, and manage incoming customer orders.
 
 ### Frontend Engineer — Leoned Africa · Remote ([Live](https://frontend1-ashen.vercel.app))
-*2024 – Present*
-- Led frontend engineering for a multi-layer school management platform (Next.js, React, TypeScript), building Students, Classes, Faculty, and Academic Rollover dashboards.
-- Built a 4-step student enrollment wizard and a reusable design system (DataTable, StatCard, DatePicker, Select, Toggle) to standardize UI across platform modules.
-- Partnered with product and backend teams to integrate REST APIs, streamline data fetching, and deliver WCAG-compliant mobile/desktop responsiveness for learners.
+*Jun 2024 – Present*
+- Built dashboard screens for managing students, classes, teachers, and academic year rollovers on a web-based school platform using Next.js and TypeScript.
+- Created a 4-step student enrollment form and shared UI components (tables, date pickers, selects, toggles) used across the platform.
+- Worked with backend engineers to connect REST API endpoints and kept pages responsive and lightweight for mobile users on slower networks.
 
-## Selected Engineering Projects
+## Projects
 
-### SIWES Activity Tracking System (SATS) — Full-Stack & Mobile
-*React, React Native (Expo), Express, Prisma, MySQL, Docker* · [Live](https://sats-sooty.vercel.app) · [GitHub](https://github.com/Josh-Uzoigwe/SIWES-Activity-Tracking-System)
-- Built a multi-platform industrial training logbook system comprising a React web portal, a React Native (Expo) mobile app with SecureStore auth & image-picker uploads, and an Express + Prisma + MySQL API.
-- Implemented Google OAuth, JWT cookies, Helmet/rate limiting, automated PDF & CSV logbook exports, Jest/Supertest API tests, and Docker Compose deployment blueprints.
+### SIWES Activity Tracking System — React, React Native (Expo), Express, Prisma, MySQL
+[Live](https://sats-sooty.vercel.app) · [GitHub](https://github.com/Josh-Uzoigwe/SIWES-Activity-Tracking-System)
+- Built a digital replacement for paper industrial-training logbooks: an Expo mobile app for students (SecureStore auth, photo uploads), a React web portal for supervisors, and an Express + MySQL backend.
+- Added Google OAuth, JWT cookie sessions, rate limiting, PDF/CSV logbook exports, Jest/Supertest API tests, and Docker Compose configs.
 
-### Northstone Investment Platform — Full-Stack FinTech App
-*Next.js, TypeScript, Prisma, Lightweight Charts, Zod, Playwright, Vitest* · [Live](https://ivstdmo.vercel.app) · [GitHub](https://github.com/Josh-Uzoigwe/Ivstdmo)
-- Engineered an investment and market simulation platform with interactive Lightweight Charts & Recharts analytics, TOTP 2FA (otplib + QR codes), and Zod input validation.
-- Established automated quality gates using Vitest unit tests and Playwright end-to-end test suites covering core authentication and portfolio workflows.
+### Northstone — Next.js, TypeScript, Prisma, Lightweight Charts, Playwright
+[Live](https://ivstdmo.vercel.app) · [GitHub](https://github.com/Josh-Uzoigwe/Ivstdmo)
+- Built a demo investment web app featuring TradingView Lightweight Charts, authenticator 2FA (otplib + QR codes), bcrypt password hashing, and Zod validation on API routes.
+- Wrote unit tests with Vitest and browser E2E tests with Playwright covering sign-in and portfolio dashboard flows.
 
-### Decentralized Freelance Escrow & CeloPulse Prediction Market — Web3 / Smart Contracts
-*Solidity, Ethers.js, React, Node.js, Celo* · [Escrow](https://it-project-dusky.vercel.app) · [CeloPulse](https://celo-pulse.vercel.app)
-- Developed Solidity smart contracts for milestone-based freelance escrow with arbitrator-backed dispute resolution, alongside a decentralized prediction market on Celo supporting trustless market creation, staking, and settlement.
+### Freelance Escrow DApp & CeloPulse Prediction Market — Solidity, Ethers.js, React, Node.js
+[Escrow](https://it-project-dusky.vercel.app) · [CeloPulse](https://celo-pulse.vercel.app)
+- Wrote Solidity contracts for milestone-based freelance escrow with arbitrator dispute resolution, plus an on-chain prediction market on Celo for staking and settling yes/no outcomes.
 
-## Leadership & Community
+## Community
 
 ### Community Manager & Blockchain Developer — Borderless Tech Club, UNN · Nsukka
 *Mar 2026 – Present*
-- Lead the student blockchain curriculum, mentoring cohorts in Solidity, smart contract security, and DApp architecture while organizing hackathons, workshops, and build sprints.
+- Teach introductory Solidity and DApp development sessions for students at UNN and help organize campus build sprints, workshops, and hackathons.
 
 ## Education
 - **B.Sc. Computer Science** — University of Nigeria, Nsukka (UNN) *(Jan 2022 – Oct 2026)*

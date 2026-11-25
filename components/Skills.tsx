@@ -3,18 +3,17 @@ import { SKILLS } from '../constants';
 
 const Skills: React.FC = () => {
   return (
-    <section id="skills" className="py-20 sm:py-28 border-t border-white/[0.06]">
+    <section id="skills" className="scroll-mt-20 py-20 sm:py-28 border-t border-white/[0.06]">
       <div className="max-w-6xl mx-auto px-5 sm:px-8">
-        <div className="space-y-3 mb-12">
-          <p className="font-mono text-xs uppercase tracking-widest text-emerald-400">
-            Technical Stack
+        <div className="space-y-2.5 mb-12">
+          <p className="font-mono text-xs uppercase tracking-widest text-zinc-500">
+            Stack
           </p>
           <h2 className="font-display text-3xl sm:text-4xl font-bold tracking-tight text-zinc-50">
-            Tools I use to ship reliably.
+            What I work with
           </h2>
           <p className="text-zinc-400 max-w-xl text-sm sm:text-base">
-            From type-safe Next.js frontends and Prisma-backed APIs to React Native mobile apps
-            and audited Solidity contracts.
+            Languages, frameworks, and tools I use day to day.
           </p>
         </div>
 

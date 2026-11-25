@@ -5,8 +5,8 @@ Personal developer portfolio and job-ready CV for **Uzoigwe Joshua** (Full-Stack
 ## Tech Stack
 - **React 19** + **TypeScript**
 - **Vite 6** + **Tailwind CSS v4**
-- **Lucide React** icons
-- **Optional Gemini AI Assistant** (with automatic local fallback when no `GEMINI_API_KEY` is configured)
+- **Lucide React**
+- **Keyboard Command Palette (`⌘K` / `Ctrl+K`)** for quick project & section navigation
 
 ## Local Development
 
